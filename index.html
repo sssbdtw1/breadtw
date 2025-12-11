@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>( ͡° ͜ʖ ͡°)吳柏翰是憨仔!🤣😂༼ つ ◕_◕ ༽つ💋🎓💋</title> 
+    <title>( ͡° ͜ʖ ͡°)吳柏翰是憨仔!🤣😂༼ つ ◕_◕ ༽つ💋🎓💋</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         /* CSS 樣式：設定地圖顯示區塊的大小 */
@@ -28,9 +28,35 @@
             margin: 0;
             padding: 0;
         }
+        /* 新增：篩選選單的樣式，讓它浮在地圖上方 */
+        #filter-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10; /* 確保選單在地圖之上 */
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.3);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        #category-filter {
+            padding: 5px;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
+
+    <div id="filter-container">
+        <label for="category-filter">選擇顯示分類:</label>
+        <select id="category-filter" onchange="filterMarkers(this.value)">
+            <option value="全部">全部</option>
+            <option value="古蹟">古蹟</option>
+            <option value="店家">店家</option>
+        </select>
+    </div>
 
     <div id="map"></div>
 
@@ -43,7 +69,10 @@
 
         // 宣告地圖和資訊視窗變數
         let map;
-        let infoWindow; 
+        let infoWindow;
+        // 新增：用來儲存所有地圖標記的陣列
+        let markers = [];
+
 
         // 這是 Google Maps API 載入完成後會自動執行的函式
         function initMap() {
@@ -61,9 +90,14 @@
             infoWindow = new google.maps.InfoWindow();
 
             // 4. 根據資料陣列，創建所有標記
-            lukangData.forEach(data => {
-                addMarker(data);
-            });
+            // ** 備註：此處假設 lukangData 變數在 data.js 已經定義 **
+            if (typeof lukangData !== 'undefined' && Array.isArray(lukangData)) {
+                lukangData.forEach(data => {
+                    addMarker(data);
+                });
+            } else {
+                console.error("錯誤：找不到 lukangData 陣列，請確認 data.js 檔案已正確載入並包含資料。");
+            }
         }
 
 
@@ -74,13 +108,19 @@ function addMarker(data) {
                 position: { lat: data.lat, lng: data.lng }, // 經緯度
                 map: map, // 綁定到哪個地圖
                 title: data.name, // 標記的提示文字
-                icon: getMarkerIcon(data.category) // 根據類別設定自訂圖標
+                icon: getMarkerIcon(data.category), // 根據類別設定自訂圖標
+                // *** 關鍵新增：將分類資訊也存到標記物件上 ***
+                category: data.category
             });
+
+            // *** 關鍵新增：將標記存入全域陣列 ***
+            markers.push(marker);
+
 
             // *** 步驟二新增：判斷是否有圖片網址，並生成圖片 HTML ***
             // 這裡使用了內聯樣式 (style="...") 確保圖片不會超過資訊視窗的寬度
-            const imageHtml = data.imageUrl ? 
-                `<img src="${data.imageUrl}" style="max-width:100%; height:auto; margin-bottom: 10px;" alt="${data.name}">` 
+            const imageHtml = data.imageUrl ?
+                `<img src="${data.imageUrl}" style="max-width:100%; height:auto; margin-bottom: 10px;" alt="${data.name}">`
                 : ''; // 如果沒有網址，則為空字串
 
             // 2. 創建資訊視窗的 HTML 內容
@@ -96,11 +136,11 @@ function addMarker(data) {
             // 3. 監聽標記的點擊事件
             marker.addListener("click", () => {
                 // 點擊標記時：
-                infoWindow.close(); 
-                
+                infoWindow.close();
+
                 // 設定資訊視窗的內容
-                infoWindow.setContent(content); 
-                
+                infoWindow.setContent(content);
+
                 // 開啟資訊視窗並將其錨定到當前標記
                 infoWindow.open({
                     anchor: marker,
@@ -108,14 +148,14 @@ function addMarker(data) {
                 });
             });
         }
-        
+
         // 根據地點類型給予不同的圖標，讓地圖更生動
         function getMarkerIcon(category) {
             let iconUrl;
             switch (category) {
                 case "古蹟":
                     // 自訂圖標：例如一個寺廟或屋頂的圖案
-                    iconUrl = 'dot.png'; 
+                    iconUrl = 'dot.png';
                     break;
                 case "店家":
                     // 自訂圖標：例如一個食物或餐廳的圖案
@@ -123,7 +163,7 @@ function addMarker(data) {
                     break;
                 case "著名地標":
                 default:
-                    // 預設圖標：例如一個旅遊或景點的圖案
+                    // 預設圖標或其他圖標
                     iconUrl = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
                     break;
             }
@@ -133,8 +173,30 @@ function addMarker(data) {
             };
         }
 
+        // *** 新增：根據使用者選擇的分類篩選標記的函式 ***
+        function filterMarkers(selectedCategory) {
+            // 關閉可能開啟的資訊視窗
+            if (infoWindow) {
+                infoWindow.close();
+            }
+
+            // 迴圈遍歷所有已創建的標記
+            markers.forEach(marker => {
+                // 檢查條件：
+                // 1. 如果選擇的是 "全部" (selectedCategory === '全部')
+                // 2. 如果標記的分類與選擇的分類相同 (marker.category === selectedCategory)
+                const shouldShow = (selectedCategory === '全部' || marker.category === selectedCategory);
+
+                // setMap(map) 會顯示標記，setMap(null) 會隱藏標記
+                marker.setMap(shouldShow ? map : null);
+            });
+        }
+
+
         // 將 initMap 函式暴露給全域 window 物件 (Google API 載入需要)
         window.initMap = initMap;
+        // 為了讓 HTML 的 onchange 事件能呼叫，也將 filterMarkers 暴露出來
+        window.filterMarkers = filterMarkers;
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVIaUxpl9GD5Loo0SpKoIXiC0SsT1DROY&callback=initMap" defer></script>

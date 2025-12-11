@@ -118,6 +118,51 @@ const lukangData = [
         address: "505彰化縣鹿港鎮中山路430號",
         imageUrl: "https://picsum.photos/400/250?random=13"
     },
+    {
+        name: "鹿港桂花巷藝術村",
+        lat: 24.05585218497819,
+        lng: 120.43192762684824,
+        category: "古蹟",
+        story: "地點的故事和介紹。",
+        address: "505彰化縣鹿港鎮桂花巷505號",
+        imageUrl: "https://picsum.photos/400/250?random=30"
+    },
+    {
+        name: "半邊井",
+        lat: 24.056020267552043,
+        lng: 120.43299075782491,
+        category: "古蹟",
+        story: "地點的故事和介紹。",
+        address: "505彰化縣鹿港鎮瑤林街12號",
+        imageUrl: "https://picsum.photos/400/250?random=31"
+    },
+    {
+        name: "友鹿軒",
+        lat: 24.056115961711864,
+        lng: 120.43291349972209,
+        category: "古蹟",
+        story: "地點的故事和介紹。",
+        address: "505彰化縣鹿港鎮瑤林街18號",
+        imageUrl: "https://picsum.photos/400/250?random=32"
+    },
+    {
+        name: "摸乳巷",
+        lat: 24.051749716695998,
+        lng: 120.43220569342378,
+        category: "古蹟",
+        story: "地點的故事和介紹。",
+        address: "505彰化縣鹿港鎮菜園里菜園路38號與40號間的長巷",
+        imageUrl: "https://picsum.photos/400/250?random=33"
+    },
+    {
+        name: "君子巷",
+        lat: 24.056693829594046,
+        lng: 120.43227917384458,
+        category: "古蹟",
+        story: "地點的故事和介紹。",
+        address: "505彰化縣鹿港鎮埔頭街31號號旁",
+        imageUrl: "https://picsum.photos/400/250?random=34"
+    },
     // 店家
     {
         name: "鄭玉珍餅舖",
@@ -262,52 +307,6 @@ const lukangData = [
         story: "地點的故事和介紹。",
         address: "505彰化縣鹿港鎮民生路42號",
         imageUrl: "https://picsum.photos/400/250?random=29"
-    },
-    // 著名地標
-    {
-        name: "鹿港桂花巷藝術村",
-        lat: 24.05585218497819,
-        lng: 120.43192762684824,
-        category: "著名地標",
-        story: "地點的故事和介紹。",
-        address: "505彰化縣鹿港鎮桂花巷505號",
-        imageUrl: "https://picsum.photos/400/250?random=30"
-    },
-    {
-        name: "半邊井",
-        lat: 24.056020267552043,
-        lng: 120.43299075782491,
-        category: "著名地標",
-        story: "地點的故事和介紹。",
-        address: "505彰化縣鹿港鎮瑤林街12號",
-        imageUrl: "https://picsum.photos/400/250?random=31"
-    },
-    {
-        name: "友鹿軒",
-        lat: 24.056115961711864,
-        lng: 120.43291349972209,
-        category: "著名地標",
-        story: "地點的故事和介紹。",
-        address: "505彰化縣鹿港鎮瑤林街18號",
-        imageUrl: "https://picsum.photos/400/250?random=32"
-    },
-    {
-        name: "摸乳巷",
-        lat: 24.051749716695998,
-        lng: 120.43220569342378,
-        category: "著名地標",
-        story: "地點的故事和介紹。",
-        address: "505彰化縣鹿港鎮菜園里菜園路38號與40號間的長巷",
-        imageUrl: "https://picsum.photos/400/250?random=33"
-    },
-    {
-        name: "君子巷",
-        lat: 24.056693829594046,
-        lng: 120.43227917384458,
-        category: "著名地標",
-        story: "地點的故事和介紹。",
-        address: "505彰化縣鹿港鎮埔頭街31號號旁",
-        imageUrl: "https://picsum.photos/400/250?random=34"
     },
     /*
     {

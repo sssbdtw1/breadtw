@@ -163,7 +163,7 @@ const lukangData = [
         address: "505彰化縣鹿港鎮埔頭街31號號旁",
         imageUrl: "https://picsum.photos/400/250?random=34"
     },
-    // 店家
+    //  ---------- 店家 ----------
     {
         name: "鄭玉珍餅舖",
         lat: 24.0565880365232,
@@ -208,15 +208,6 @@ const lukangData = [
         story: "地點的故事和介紹。",
         address: "50546彰化縣鹿港鎮民族路168號",
         imageUrl: "https://picsum.photos/400/250?random=18"
-    },
-    {
-        name: "港城豆花",
-        lat: 24.055792450069955,
-        lng: 120.43332015286907,
-        category: "店家",
-        story: "地點的故事和介紹。",
-        address: "505彰化縣鹿港鎮民權路244號",
-        imageUrl: "https://picsum.photos/400/250?random=19"
     },
     {
         name: "鹿港吳敦厚燈鋪",
@@ -282,24 +273,6 @@ const lukangData = [
         imageUrl: "https://picsum.photos/400/250?random=26"
     },
     {
-        name: "鹿港吹糖",
-        lat: 24.05820763184786,
-        lng: 120.43042461219166,
-        category: "店家",
-        story: "地點的故事和介紹。",
-        address: "505彰化縣鹿港鎮文開路32巷25號",
-        imageUrl: "https://picsum.photos/400/250?random=27"
-    },
-    {
-        name: "阿婆麻糬舖",
-        lat: 24.054431534834094,
-        lng: 120.43407141502132,
-        category: "店家",
-        story: "地點的故事和介紹。",
-        address: "505彰化縣鹿港鎮大明路9號",
-        imageUrl: "https://picsum.photos/400/250?random=28"
-    },
-    {
         name: "凰珍囍餅",
         lat: 24.059215123643785,
         lng: 120.43034362050166,
@@ -319,4 +292,5 @@ const lukangData = [
         imageUrl: "https://example.com/new_place.jpg" 
     },
     */
+
 ];

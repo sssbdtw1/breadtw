@@ -209,6 +209,15 @@ const lukangData = [
         address: "50546彰化縣鹿港鎮民族路168號",
         imageUrl: "https://picsum.photos/400/250?random=18"
     },
+        {
+        name: "港城豆花",
+        lat: 24.05581145710149,
+        lng: 120.43336287407666,
+        category: "店家",
+        story: "地點的故事和介紹。",
+        address: "505彰化縣鹿港鎮民權路244號",
+        imageUrl: "" 
+    },
     {
         name: "鹿港吳敦厚燈鋪",
         lat: 24.0572511731095,
@@ -294,3 +303,4 @@ const lukangData = [
     */
 
 ];
+

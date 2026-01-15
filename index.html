@@ -104,51 +104,53 @@
 
 // 創建標記和綁定資訊視窗的函式
 function addMarker(data) {
-            // 1. 創建標記
-            const marker = new google.maps.Marker({
-                position: { lat: data.lat, lng: data.lng }, // 經緯度
-                map: map, // 綁定到哪個地圖
-                title: data.name, // 標記的提示文字
-                icon: getMarkerIcon(data.category), // 根據類別設定自訂圖標
-                // *** 關鍵新增：將分類資訊也存到標記物件上 ***
-                category: data.category
-            });
+    // 1. 創建標記
+    const marker = new google.maps.Marker({
+        position: { lat: data.lat, lng: data.lng },
+        map: map,
+        title: data.name,
+        icon: getMarkerIcon(data.category),
+        category: data.category
+    });
 
-            // *** 關鍵新增：將標記存入全域陣列 ***
-            markers.push(marker);
+    markers.push(marker);
 
+    // 製作導航連結 (Google Maps 外部連結)
+    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${data.lat},${data.lng}&travelmode=walking`;
 
-            // *** 步驟二新增：判斷是否有圖片網址，並生成圖片 HTML ***
-            // 這裡使用了內聯樣式 (style="...") 確保圖片不會超過資訊視窗的寬度
-            const imageHtml = data.imageUrl ?
-                `<img src="${data.imageUrl}" style="max-width:100%; height:auto; margin-bottom: 10px;" alt="${data.name}">`
-                : ''; // 如果沒有網址，則為空字串
+    // 處理圖片內容
+    const imageHtml = data.imageUrl ?
+        `<img src="${data.imageUrl}" style="width:100%; max-height:150px; object-fit:cover; border-radius:8px; margin-bottom: 10px;">`
+        : '';
 
-            // 2. 創建資訊視窗的 HTML 內容
-            const content = `
-                <div class="info-window-content">
-                    ${imageHtml}
-                    <h4>${data.name} (${data.category})</h4>
-                    <p><strong>地址:</strong> ${data.address}</p>
-                    <p><strong>故事/介紹:</strong> ${data.story}</p>
-                </div>
-            `;
+    // 2. 創建資訊視窗的 HTML 內容 (加入導航按鈕)
+    const content = `
+        <div class="info-window-content">
+            ${imageHtml}
+            <h4>${data.name} <span style="font-size:12px; color:#666;">(${data.category})</span></h4>
+            <p><strong>地址:</strong> ${data.address}</p>
+            <p><strong>故事:</strong> ${data.story}</p>
+            <hr>
+            <a href="${navUrl}" target="_blank" style="
+                display: block;
+                background-color: #C0392B;
+                color: white;
+                text-align: center;
+                padding: 10px;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+            ">📍 開始導航 (步行)</a>
+        </div>
+    `;
 
-            // 3. 監聽標記的點擊事件
-            marker.addListener("click", () => {
-                // 點擊標記時：
-                infoWindow.close();
-
-                // 設定資訊視窗的內容
-                infoWindow.setContent(content);
-
-                // 開啟資訊視窗並將其錨定到當前標記
-                infoWindow.open({
-                    anchor: marker,
-                    map: map,
-                });
-            });
-        }
+    // 3. 監聽點擊
+    marker.addListener("click", () => {
+        infoWindow.close();
+        infoWindow.setContent(content);
+        infoWindow.open({ anchor: marker, map: map });
+    });
+}
 
         // 根據地點類型給予不同的圖標，讓地圖更生動
         function getMarkerIcon(category) {

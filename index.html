@@ -17,13 +17,37 @@
         }
         .info-window-content h4 {
             font-size: 20px;
-			margin-top: 0;
+            margin-top: 0;
             color: #C0392B; /* 鹿港紅 */
         }
         .info-window-content p {
             font-size: 18px;
             line-height: 1.5;
         }
+
+        /* --- 新增：圖片廊樣式 (開始) --- */
+        .image-gallery {
+            display: flex; /* 讓圖片水平排列 */
+            overflow-x: auto; /* 如果圖片超出寬度，允許水平捲動 */
+            gap: 10px; /* 圖片之間的間距 */
+            margin-bottom: 15px;
+            padding-bottom: 5px; /* 避免捲軸貼太近 */
+            /* 讓捲動順暢一點 */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* 定義圖片廊裡面的每一張圖片 */
+        .image-gallery img {
+            height: 220px; /* 固定高度，讓排列整齊 */
+            width: auto;   /* 寬度自動調整 */
+            object-fit: cover; /* 保持圖片比例填滿 */
+            border-radius: 8px; /* 圓角 */
+            flex-shrink: 0; /* 防止圖片被擠壓變形 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        /* --- 新增：圖片廊樣式 (結束) --- */
+
         /* 讓頁面邊距歸零 */
         body {
             margin: 0;
@@ -64,34 +88,23 @@
     <script src="data.js"></script>
 
     <script>
-
-
         // *** 初始化 Google 地圖和標記功能 ***
 
-        // 宣告地圖和資訊視窗變數
         let map;
         let infoWindow;
-        // 新增：用來儲存所有地圖標記的陣列
         let markers = [];
 
-
-        // 這是 Google Maps API 載入完成後會自動執行的函式
         function initMap() {
-            // 1. 設定鹿港老街的中心點經緯度
             const lukangCenter = { lat: 24.0573, lng: 120.4340 };
 
-            // 2. 建立地圖物件
             map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 17, // 初始放大級數
-                center: lukangCenter, // 初始中心點
-                mapTypeId: 'roadmap', // 地圖類型
+                zoom: 17,
+                center: lukangCenter,
+                mapTypeId: 'roadmap',
             });
 
-            // 3. 建立一個共用的資訊視窗
             infoWindow = new google.maps.InfoWindow();
 
-            // 4. 根據資料陣列，創建所有標記
-            // ** 備註：此處假設 lukangData 變數在 data.js 已經定義 **
             if (typeof lukangData !== 'undefined' && Array.isArray(lukangData)) {
                 lukangData.forEach(data => {
                     addMarker(data);
@@ -101,104 +114,107 @@
             }
         }
 
+        // 創建標記和綁定資訊視窗的函式
+        function addMarker(data) {
+            const marker = new google.maps.Marker({
+                position: { lat: data.lat, lng: data.lng },
+                map: map,
+                title: data.name,
+                icon: getMarkerIcon(data.category),
+                category: data.category
+            });
 
-// 創建標記和綁定資訊視窗的函式
-function addMarker(data) {
-    // 1. 創建標記
-    const marker = new google.maps.Marker({
-        position: { lat: data.lat, lng: data.lng },
-        map: map,
-        title: data.name,
-        icon: getMarkerIcon(data.category),
-        category: data.category
-    });
+            markers.push(marker);
 
-    markers.push(marker);
+            const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${data.lat},${data.lng}&travelmode=walking`;
 
-    // 製作導航連結 (Google Maps 外部連結)
-    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${data.lat},${data.lng}&travelmode=walking`;
+            // --- 修改：處理多張圖片的內容 ---
+            let imageHtml = '';
 
-    // 處理圖片內容
-    const imageHtml = data.imageUrl ?
-        `<img src="${data.imageUrl}" style="width:100%; max-height:150px; object-fit:cover; border-radius:8px; margin-bottom: 10px;">`
-        : '';
+            // 檢查 data.imageUrls 是否存在且是一個有內容的陣列
+            if (data.imageUrls && Array.isArray(data.imageUrls) && data.imageUrls.length > 0) {
+                // 開始建立圖片廊容器
+                imageHtml += '<div class="image-gallery">';
 
-    // 2. 創建資訊視窗的 HTML 內容 (加入導航按鈕)
-    const content = `
-        <div class="info-window-content">
-            ${imageHtml}
-            <h4>${data.name} <span style="font-size:12px; color:#666;">(${data.category})</span></h4>
-            <p><strong>地址:</strong> ${data.address}</p>
-            <p><strong>故事:</strong> ${data.story}</p>
-            <hr>
-            <a href="${navUrl}" target="_blank" style="
-                display: block;
-                background-color: #C0392B;
-                color: white;
-                text-align: center;
-                padding: 10px;
-                text-decoration: none;
-                border-radius: 5px;
-                font-weight: bold;
-            ">📍 開始導航 (步行)</a>
-        </div>
-    `;
+                // 使用 forEach 迴圈遍歷陣列中的每一個網址
+                data.imageUrls.forEach(url => {
+                    // 將每個網址生成一個 <img> 標籤並串接起來
+                    imageHtml += `<img src="${url}" alt="${data.name}照片">`;
+                });
 
-    // 3. 監聽點擊
-    marker.addListener("click", () => {
-        infoWindow.close();
-        infoWindow.setContent(content);
-        infoWindow.open({ anchor: marker, map: map });
-    });
-}
+                // 結束圖片廊容器
+                imageHtml += '</div>';
+            }
+            // (選用) 向下相容：如果某些舊資料還是用單一 imageUrl 欄位，也可以顯示
+            else if (data.imageUrl) {
+                 imageHtml = `<div class="image-gallery"><img src="${data.imageUrl}" alt="${data.name}照片"></div>`;
+            }
+            // --- 修改結束 ---
 
-        // 根據地點類型給予不同的圖標，讓地圖更生動
+
+            // 2. 創建資訊視窗的 HTML 內容 (加入導航按鈕)
+            const content = `
+                <div class="info-window-content">
+                    ${imageHtml} <h4>${data.name} <span style="font-size:12px; color:#666;">(${data.category})</span></h4>
+                    <p><strong>地址:</strong> ${data.address}</p>
+                    <p><strong>故事:</strong> ${data.story}</p>
+                    <hr>
+                    <a href="${navUrl}" target="_blank" style="
+                        display: block;
+                        background-color: #C0392B;
+                        color: white;
+                        text-align: center;
+                        padding: 10px;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        font-weight: bold;
+                    ">📍 開始導航 (步行)</a>
+                </div>
+            `;
+
+            // 3. 監聽點擊
+            marker.addListener("click", () => {
+                infoWindow.close();
+                infoWindow.setContent(content);
+                infoWindow.open({ anchor: marker, map: map });
+            });
+        }
+
         function getMarkerIcon(category) {
             let iconUrl;
             switch (category) {
                 case "古蹟":
-                    // 自訂圖標：例如一個寺廟或屋頂的圖案
                     iconUrl = 'dot.png';
                     break;
                 case "店家":
-                    // 自訂圖標：例如一個食物或餐廳的圖案
                     iconUrl = 'dot2.png';
                     break;
+                default:
+                    // 給一個預設值，避免找不到圖標
+                    iconUrl = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'; 
             }
             return {
                 url: iconUrl,
-                scaledSize: new google.maps.Size(35, 42) // 圖標大小 (可調整)
+                scaledSize: new google.maps.Size(35, 42)
             };
         }
 
-        // *** 新增：根據使用者選擇的分類篩選標記的函式 ***
         function filterMarkers(selectedCategory) {
-            // 關閉可能開啟的資訊視窗
             if (infoWindow) {
                 infoWindow.close();
             }
 
-            // 迴圈遍歷所有已創建的標記
             markers.forEach(marker => {
-                // 檢查條件：
-                // 1. 如果選擇的是 "全部" (selectedCategory === '全部')
-                // 2. 如果標記的分類與選擇的分類相同 (marker.category === selectedCategory)
                 const shouldShow = (selectedCategory === '全部' || marker.category === selectedCategory);
-
-                // setMap(map) 會顯示標記，setMap(null) 會隱藏標記
                 marker.setMap(shouldShow ? map : null);
             });
         }
 
-
-        // 將 initMap 函式暴露給全域 window 物件 (Google API 載入需要)
         window.initMap = initMap;
-        // 為了讓 HTML 的 onchange 事件能呼叫，也將 filterMarkers 暴露出來
         window.filterMarkers = filterMarkers;
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVIaUxpl9GD5Loo0SpKoIXiC0SsT1DROY&callback=initMap" defer></script>
 
 </body>
-
 </html>

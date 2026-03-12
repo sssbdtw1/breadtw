@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鹿港老街的故事座標：地圖說書人</title>
+    <style>
+        /* 定義主題顏色 */
+        :root {
+            --lukang-red: #C0392B;
+            --lukang-gold: #D4AC0D;
+            --bg-light: #FDF5E6; /* 古典米色 */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background-color: var(--bg-light);
+            color: #333;
+        }
+
+        /* 英雄區塊 (Hero Section) */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('Photo/hero_bg.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* 開始探索按鈕 */
+        .start-btn {
+            background-color: var(--lukang-red);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid transparent;
+        }
+
+        .start-btn:hover {
+            background-color: transparent;
+            border: 2px solid white;
+            transform: translateY(-5px);
+        }
+
+        /* 專題特色區塊 */
+        .features {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--lukang-red);
+        }
+
+        .feature-card h3 {
+            color: var(--lukang-red);
+            margin-bottom: 15px;
+        }
+
+        /* 頁尾 */
+        footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* 手機版縮放 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1>鹿港老街的故事座標</h1>
+        <p>走過清朝的繁華，穿梭日治的紅磚，<br>這不只是一張地圖，更是一本會說故事的文化存摺。</p>
+        
+        <a href="map.html" class="start-btn">進入故事地圖</a>
+    </section>
+
+    <section class="features">
+        <div class="feature-card">
+            <h3>📖 數位說書人</h3>
+            <p>融合資料處理技術，將古老的鹿港故事轉化為可隨身攜帶的數位導覽。</p>
+        </div>
+        <div class="feature-card">
+            <h3>🗺️ 精準地圖導航</h3>
+            <p>串接 Google Maps API，讓你輕鬆找到摸乳巷、龍山寺等知名座標。</p>
+        </div>
+        <div class="feature-card">
+            <h3>📸 沉浸式圖庫</h3>
+            <p>透過多張珍貴照片展示，在抵達之前先一睹古蹟建築的細膩美感。</p>
+        </div>
+    </section>
+
+    <footer>
+        <h3>資料處理科：專題研究作品</h3>
+        <p>組別：第八組<p>
+        <p>指導老師：老師名字</p>
+    </footer>
+
+</body>
+</html>

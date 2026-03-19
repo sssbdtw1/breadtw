@@ -33,7 +33,9 @@ const lukangData = [
         address: "505彰化縣鹿港鎮埔頭街96號",
         imageUrls: [
             "Photo/新祖宮1.jpg",
-            "Photo/新祖宮2.jpg"
+            "Photo/新祖宮2.jpg",
+            "Photo/新祖宮3.jpg",
+            "Photo/新祖宮4.jpg"
         ]
     },
     {
